@@ -1,0 +1,27 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block content %}
+
+<section class="reviews-detail">
+<div class="container">
+  <ul>
+  <li class="reviews-detail__name">{{reviews.name}}</li>
+  <li class="reviews-detail__date">{{reviews.date}}</li>
+  </ul>
+<hr>
+<p>
+  {% if reviews.photo.url|length > 1 %}
+  <img src="{{reviews.photo.url}}" alt="">
+  {% endif %}
+  {% if reviews.photo.url|length > 1 %}
+  <video muted loop playsinline controls id="myVideo" type="video/mp4">
+  <source src="{{reviews.video.url}}"  type='video/mp4'>
+  </video>
+  {% endif %}
+  {{reviews.description}}
+  </p>
+  <a href="../" class="btn__class">Назад к списку</a>
+  </div>
+</section>
+
+{% endblock %}

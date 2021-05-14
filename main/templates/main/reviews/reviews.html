@@ -1,0 +1,23 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block content %}
+
+<section class="reviews">
+<div class="container">
+  <div class="row">
+      {% for el in reviews %}
+      <div class="col-md-3">
+        <a href="{{el.id}}/">
+          <ul>
+            <li class="reviews__name">{{el.name}}</li>
+            <li class="reviews__date">{{el.date}}</li>
+          </ul>
+        <hr>
+        <p>{{ el.description|slice:":170" }}...</p>
+        </a>
+      </div>
+      {% endfor %}
+  </div>
+</div>
+</section>
+{% endblock %}

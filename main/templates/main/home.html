@@ -1,0 +1,158 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block content %}
+
+
+    <section class="section-video">
+       <div class="section-video__content">
+
+          <div class="section-video__content-text">
+
+          Недвижимость в <span>Абхазии</span>
+          <br>
+          Мечта из надежных рук
+          </div>
+
+
+
+          <a href="" class="btn__class btn__class-video">посмотреть объекты</a>
+        </div>
+        <div class="video">
+           <video autoplay muted loop playsinline id="myVideo" type="video/mp4">
+             <source src="{% static 'videos/background.webm' %}" type='video/webm'>
+             <source src="{% static 'videos/background.mp4' %}"  type='video/mp4'>
+             <source src="{% static 'videos/background.ogg' %}"  type='video/ogg'>
+           </video>
+
+
+
+
+        </div>
+
+    </section>
+
+    <section class="section-filter">
+      <div class="container">
+      <form method="post">
+        <div class="row">
+           <div class="col-md-4 section-filter__form-div-top">
+            <span>тип недвижимости</span>
+            <select>
+          <option>Не выбрано</option>
+          {% for el in typesapartments %}
+            <option value="{{ el.id }}">{{ el.title }}</option>
+          {% endfor %}
+          </select>
+          </div>
+
+          <div class="col-md-4 section-filter__form-div-top">
+            <span>продажа/аренда</span>
+           <select>
+            <option>Не выбрано</option>
+          {% for el in typesale %}
+            <option value="{{ el.id }}">{{ el.name }}</option>
+          {% endfor %}
+        </select>
+          </div>
+
+
+
+          <div class="col-md-4 section-filter__form-div-top">
+            <span>район/город</span>
+           <select>
+          <option>По всей стране</option>
+          {% for el in cities %}
+            <option value="{{ el.id }}">{{ el.title }}</option>
+          {% endfor %}
+        </select>
+          </div>
+
+
+         <div class="col-md-6 section-filter__form-div-bottom">
+            <span>цена (в рублях)</span>
+           <input class="money jq-selectbox__select" type="" name="" placeholder="От">
+            <input class="money jq-selectbox__select" type="" name="" placeholder="До">
+          </div>
+
+
+          <div class="col-md-6 section-filter__form-div-bottom">
+            <span>площадь (м²)</span>
+           <input class="jq-selectbox__select" type="" name="" placeholder="От">
+            <input class="jq-selectbox__select" type="" name="" placeholder="До">
+          </div>
+
+
+
+
+
+
+          <div class="col-md-12 text-end">
+            <a href="" class="btn__class">поиск по фильтру</a>
+          </div>
+
+          </div>
+
+      </form>
+
+          </div>
+
+
+
+
+
+    </section>
+
+
+
+
+    <section class="objects">
+      <div class="container">
+        <div class="row">
+
+
+
+          {% for el in block_el %}
+
+          <div class="col-md-3">
+          <div class="objects__content">
+            {% for elem in projectImage %}
+              {% if elem.image_project.id == el.announcement.id %}
+               <div class="objects__content-img" style="background: url({{ elem.image.url }}); background-size: cover;">
+                 <span class="objects__content-price">{{ el.announcement.price }} ₽</span>
+               </div>
+              {% endif %}
+            {% endfor %}
+          <div class="objects__content-info">
+          <span class="objects__name">{{ el.name|slice:":47"  }}...</span>
+          <img class="objects__location-img" src="{% static 'img/placeholder.svg' %}">
+          <span class="objects__location">
+          {{ el.announcement.cities }}, {{ el.announcement.address }}
+          </span>
+          {% if el.name_class == 'apartments' or el.name_class == 'commerce' or el.name_class == 'houses' %}
+          <ul>
+          <li><img src="{% static 'img/ruler.svg' %}">{{ el.announcement.totalarea }} м²</li>
+          <li><img src="{% static 'img/double-bed.svg' %}">{{ el.rooms }} комнат</li>
+          <li><img src="{% static 'img/stairs.svg' %}">{{ el.floor }} этж</li>
+          </ul>
+          {% endif %}
+          <a href="{{request.get_full_path}}{{el.name_class}}/{{ el.id }}/" class="btn__class">посмотреть</a>
+            </div>
+          </div>
+            </div>
+          {% endfor %}
+
+        </div>
+      </div>
+    </section>
+
+
+
+    {% for el in project %}
+     {{ el.description }}
+       {% for elem in projectImage %}
+         {% if elem.project.id == el.id %}
+          <img src="{{ elem.image.url }}" alt="" width="200">
+         {% endif %}
+        {% endfor %}
+    {% endfor %}
+    {% endblock %}

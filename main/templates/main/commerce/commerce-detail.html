@@ -1,0 +1,157 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block content %}
+
+
+
+<section class="objects-detail">
+  <div class="container">
+     <h1>{{commerce.name}}, {{commerce.announcement.totalarea}} м² <span>#{{commerce.id}}</span></h1>
+    <div class="row">
+      <div class="col-md-6">
+<div class="swiper-container gallery-top" uk-lightbox>
+      <div class="swiper-wrapper">
+        {% for elem in projectImage %}
+          {% if elem.image_project.id == commerce.announcement.id %}
+          <div class="swiper-slide"><div class="swiper-slide-container"><a class="uk-button uk-button-primary" href="{{ elem.image.url }}"><img src="{{ elem.image.url }}"></a></div></div>
+          {% endif %}
+         {% endfor %}
+
+      </div>
+      <!-- Add Arrows -->
+
+      <div class="swiper-button-next"><img src="{% static 'img/svg/next.png' %}"></div>
+      <div class="swiper-button-prev"><img src="{% static '/img/svg/back.png' %}"></div>
+  </div>
+  <div class="swiper-container gallery-thumbs">
+      <div class="swiper-wrapper">
+        {% for elem in projectImage %}
+          {% if elem.image_project.id == commerce.announcement.id %}
+          <div class="swiper-slide"><div class="swiper-slide-container"><img src="{{ elem.image.url }}"></div></div>
+          {% endif %}
+         {% endfor %}
+
+      </div>
+  </div>
+
+
+<script type="text/javascript">
+   var galleryTop = new Swiper('.gallery-top', {
+      spaceBetween: 10,
+      effect: 'fade',
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      loop: true,
+      loopedSlides: 5
+    });
+    var galleryThumbs = new Swiper('.gallery-thumbs', {
+      spaceBetween: 10,
+
+      slidesPerView: 5,
+      touchRatio: 0.2,
+      slideToClickedSlide: true,
+      loop: true,
+      loopedSlides: 5
+    });
+    galleryTop.controller.control = galleryThumbs;
+    galleryThumbs.controller.control = galleryTop;
+</script>
+
+
+
+
+
+      </div>
+      <div class="col-md-6">
+
+
+      <table>
+
+          <tr><td>Район:</td><td>г. {{commerce.announcement.cities}}, {{apartments.announcement.address}}</td></tr>
+          <tr><td>Площадь:</td><td>{{commerce.announcement.totalarea}} м²</td></tr>
+          <tr><td>Тип сдачи:</td><td>{{commerce.leaseterms.name}}</td></tr>
+          <tr><td>Состояние:</td><td>{{commerce.condition.name}}</td></tr>
+          <tr><td>Право собственности:</td><td>{{commerce.announcement.ownership}}</td></tr>
+          <tr><td>Расстояние до моря:</td><td>{{commerce.announcement.distancesea}} метров</td></tr>
+          <tr><td>Расстояние до трассы:</td><td>{{commerce.announcement.distancetrack}} метров</td></tr>
+          <tr><td>Номер объектов:</td><td>#{{commerce.id}}</td></tr>
+          {% if commerce.announcement.typesale.id == 2 %}
+          <tr><td>Аренда:</td><td>{{commerce.announcement.leaseterms.name}}</td></tr>
+          {% endif %}
+          <tr><td>Стоимость:</td><td>{{commerce.announcement.price}} руб</td></tr>
+
+      </table>
+<hr>
+
+      <div class="objects-detail__social">
+
+        <ul>
+          <span>Поделиться:</span>
+          <li><a href="whatsapp://send?text=http://127.0.0.1:8001{{ request.get_full_path }}" data-action="share/whatsapp/share"><i class="fab fa-whatsapp"></i></a></li>
+          <li><a href="http://vk.com/share.php?url=http://127.0.0.1:8001{{ request.get_full_path }}" target="_blank" rel="nofollow"><i class="fab fa-vk"></i></a></li>
+          <li><a href="https://www.facebook.com/sharer/sharer.php?u=http://127.0.0.1:8001{{ request.get_full_path }}"
+   target="_blank" rel="nofollow"><i class="fab fa-facebook"></i></a></li>
+        </ul>
+         <a href="" class="btn__class"><i class="fa fa-phone" style="font-size:13px;"></i> Позвонить</a>
+         <a href="" class="btn__class btn__class-whatsApp"><i class="fab fa-whatsapp"></i> Написать</a>
+      </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="container">
+    <h2>Описание</h2>
+    <hr>
+    <p>{{commerce.announcement.description}}</p>
+  </div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+    <section class="objects">
+      <div class="container">
+        <h1>Выгодные предложения</h1>
+        <div class="row">
+          {% for el in commerce_block_price|slice:":4" %}
+          <div class="col-md-3">
+          <div class="objects__content">
+            {% for elem in projectImage %}
+              {% if elem.image_project.id == el.announcement.id %}
+               <div class="objects__content-img" style="background: url({{ elem.image.url }}); background-size: cover;">
+                 <span class="objects__content-price">{{el.announcement.price}} ₽</span>
+               </div>
+              {% endif %}
+            {% endfor %}
+          <div class="objects__content-info">
+          <span class="objects__name">{{ el.name }}</span>
+          <img class="objects__location-img" src="{% static 'img/placeholder.svg' %}">
+          <span class="objects__location">
+          {{ el.announcement.cities }}, {{ el.announcement.address }}
+          </span>
+          <ul>
+          <li><img src="{% static 'img/ruler.svg' %}">{{ el.announcement.totalarea }} м²</li>
+          <li><img src="{% static 'img/stairs.svg' %}">{{ el.floor }} этажей</li>
+          </ul>
+          <a href="/apartments/{{ el.id }}/" class="btn__class">посмотреть</a>
+            </div>
+          </div>
+            </div>
+          {% endfor %}
+
+        </div>
+      </div>
+    </section>
+{% endblock %}
